@@ -5,6 +5,7 @@ using FluentAssertions;
 using FluentValidation;
 using Moq;
 using Shared;
+using Shared.Helpers;
 
 namespace UnitTests;
 
@@ -54,7 +55,7 @@ public class UserServiceTests
     private UserService CreateServiceSetup()
     {
         var userRepoMock = new Mock<IUserRepository>();
-        var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperProfile>());
+        var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfiles>());
         var mapper = new Mapper(mapperConfig);
         var validator = new UserValidators();
         
