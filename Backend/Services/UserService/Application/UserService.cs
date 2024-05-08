@@ -1,5 +1,7 @@
 ﻿using Application.Interface;
+using AutoMapper;
 using FluentValidation;
+using Shared;
 
 namespace Application;
 
