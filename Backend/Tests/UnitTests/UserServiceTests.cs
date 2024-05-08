@@ -52,14 +52,14 @@ public class UserServiceTests
     }
     
     // Helper Classes and Methods
-    private UserService CreateServiceSetup()
+    private ServiceSetup CreateServiceSetup()
     {
         var userRepoMock = new Mock<IUserRepository>();
         var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfiles>());
         var mapper = new Mapper(mapperConfig);
         var validator = new UserValidators();
         
-        return new ServiceSetup(userRepoMock.Object, mapper, validator);
+        return new ServiceSetup(userRepoMock, mapper, validator);
     }
 
     private class ServiceSetup
