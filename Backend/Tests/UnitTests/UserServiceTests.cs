@@ -35,6 +35,16 @@ public class UserServiceTests
         action.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'validator')");
     }
     
+    [Fact]
+    public void CreateService_WithValidParameters_ShouldNotThrowException()
+    {
+        // Act
+        Action action = () => new UserService(new Mock<IUserRepository>().Object, new Mock<Imapper>().Object, new Mock<IValidator<User>>().Object);
+        
+        // Assert
+        action.Should().NotThrow();
+    }
+    
     // Helper Classes and Methods
     private UserService CreateServiceSetup()
     {
