@@ -1,5 +1,6 @@
 using Application;
 using Application.Interface;
+using Application.Validator;
 using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
@@ -57,7 +58,7 @@ public class UserServiceTests
         var userRepoMock = new Mock<IUserRepository>();
         var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfiles>());
         var mapper = new Mapper(mapperConfig);
-        var validator = new UserValidators();
+        var validator = new UserValidator();
         
         return new ServiceSetup(userRepoMock, mapper, validator);
     }

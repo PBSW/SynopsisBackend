@@ -14,8 +14,8 @@ public class UserService : IUserService
     
     public UserService(IUserRepository userRepository, IMapper mapper, IValidator<User> validator)
     {
-        _userRepository = userRepository ?? throw new ArgumentNullException("Value cannot be null. (Parameter 'userRepository')");
-        _mapper = mapper ?? throw new ArgumentNullException("Value cannot be null. (Parameter 'mapper')");
-        _validator = validator ?? throw new ArgumentNullException("Value cannot be null. (Parameter 'validator')");
+        _userRepository = userRepository ?? throw new ArgumentNullException("userRepository");
+        _mapper = mapper ?? throw new ArgumentNullException("mapper");
+        _validator = validator ?? throw new ArgumentNullException("validator");
     }
 }
