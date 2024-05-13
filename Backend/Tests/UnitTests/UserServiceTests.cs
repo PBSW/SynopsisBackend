@@ -6,6 +6,7 @@ using FluentAssertions;
 using FluentValidation;
 using Moq;
 using Shared;
+using Shared.DTOs.Create;
 using Shared.Helpers;
 
 namespace UnitTests;
@@ -50,6 +51,150 @@ public class UserServiceTests
         
         // Assert
         action.Should().NotThrow();
+    }
+
+    // Creation Tests
+    
+    [Fact]
+    public async void CreateUser_WithValidUser_ShouldReturnUserResponse()
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        var userCreate = new UserCreate
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            Mail = "Test@Email.com"
+        };
+        
+        var user = new User
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = "Doe",
+            Mail = "Test@Email.com",
+        };
+        
+        serviceSetup.GetUserRepoMock().Setup(x => x.CreateUserAsync(It.IsAny<User>())).ReturnsAsync(user);
+
+        // Act
+        Func<Task> action = async () => await service.CreateUserAsync(userCreate);
+        
+        // Assert
+        await action.Should().NotThrowAsync();
+    }
+
+    [Fact]
+    public async void CreateUser_WithNullUser_ShouldThrowNullReferenceExceptionWithMessage()
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        // Act
+        Func<Task> action = async () => await service.CreateUserAsync(null);
+        
+        // Assert
+        await action.Should().ThrowAsync<NullReferenceException>().WithMessage("UserCreate is null");
+    }
+
+    [Theory]
+    [InlineData(null, "First Name is null")]
+    [InlineData("", "First Name is required")]
+    [InlineData(" ", "First Name is required")]
+    public async void CreateUser_WithInvalidFirstName_ShouldThrowValidationExceptionWithMessage(string firstName,
+        string errorMessage)
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        var userCreate = new UserCreate
+        {
+            FirstName = firstName,
+            LastName = "Doe",
+            Mail = "Test@Email.com"
+        };
+            
+        var user = new User
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = "Doe",
+            Mail = "Test@Email.com" 
+        };
+        
+        // Act
+        Func<Task> action = async () => await service.CreateUserAsync(userCreate);
+        
+        // Assert
+        await action.Should().ThrowAsync<ValidationException>().WithMessage(errorMessage);
+    }
+
+    [Theory]
+    [InlineData(null, "Last Name is null")]
+    [InlineData("", "Last Name is required")]
+    [InlineData(" ", "Last Name is required")]
+    public async void CreateUser_WithInvalidLastName_ShouldThrowValidationExceptionWithMessage(string lastName,
+        string errorMessage)
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        var userCreate = new UserCreate
+        {
+            FirstName = "John",
+            LastName = lastName,
+            Mail = "Test@Email.com"
+        };
+            
+        var user = new User
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = lastName,
+            Mail = "Test@Email.com" 
+        };
+        
+        // Act
+        Func<Task> action = async () => await service.CreateUserAsync(userCreate);
+        
+        // Assert
+        await action.Should().ThrowAsync<ValidationException>().WithMessage(errorMessage);
+    }
+
+    [Theory]
+    [InlineData(null, "Email is null")]
+    [InlineData("", "Email is required")]
+    [InlineData(" ", "Email is required")]
+    [InlineData("test", "Email is not a valid Email Address")]
+    public async void CreateUser_WithInvalidMail_ShouldThrowValidationExceptionWithMessage(string mail, string message)
+    {
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        var userCreate = new UserCreate
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            Mail = mail
+        };
+        
+        var user = new User
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = "Doe",
+            Mail = mail
+        };
+        
+        // Act
+        Func<Task> action = async () => await service.CreateUserAsync(userCreate);
+        
+        // Assert
+        await action.Should().ThrowAsync<ValidationException>().WithMessage(message);
     }
     
     // Helper Classes and Methods

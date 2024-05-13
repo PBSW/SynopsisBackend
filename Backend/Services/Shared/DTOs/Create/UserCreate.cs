@@ -1,10 +1,8 @@
-﻿namespace Shared;
+﻿namespace Shared.DTOs.Create;
 
-public class User
+public class UserCreate
 {
-    public int Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Mail { get; set; }
-    public DateTime DateCreated { get; set; }
 }
