@@ -30,6 +30,8 @@ public class UserService : IUserService
         
         var user = _mapper.Map<User>(userCreate);
         
+        user.DateCreated = DateTime.Now;
+        
         var validationResult = await _validator.ValidateAsync(user);
         
         if (!validationResult.IsValid)

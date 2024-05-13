@@ -5,13 +5,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["Backend/Services/UserService/API/API.csproj", "API/"]
-COPY ["Backend/Services/UserService/Application/Application.csproj", "Application/"]
-COPY ["Backend/Services/Shared/Shared.csproj", "Shared/"]
-COPY ["Backend/Services/UserService/Infrastructure/Infrastructure.csproj", "Infrastructure/"]
-RUN dotnet restore "API/API.csproj"
+COPY ["/Backend/Services/UserService/API/API.csproj", "API/"]
+COPY ["/Backend/Services/UserService/Application/Application.csproj", "Application/"]
+COPY ["/Backend/Services/Shared/Shared.csproj", "Shared/"]
+COPY ["/Backend/Services/UserService/Infrastructure/Infrastructure.csproj", "Infrastructure/"]
+
 COPY . .
-WORKDIR "/src/API"
+WORKDIR "/src/Backend/Services/UserService/API"
+
+RUN dotnet restore "API.csproj"
+
 RUN dotnet build "/src/Backend/Services/UserService/API/API.csproj" -c Release -o /app/build
 
 FROM build AS publish

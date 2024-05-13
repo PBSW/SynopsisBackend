@@ -18,7 +18,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddAutoMapper(typeof(UserService).Assembly);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //Database
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseMySql(

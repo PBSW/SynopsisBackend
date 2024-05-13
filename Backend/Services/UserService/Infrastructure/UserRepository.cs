@@ -11,6 +11,7 @@ public class UserRepository : IUserRepository
     public UserRepository(DatabaseContext context)
     {
         _dbcontext = context;
+        _dbcontext.Database.EnsureCreated();
     }
     
     public async Task<User> CreateUserAsync(User user)
@@ -19,7 +20,7 @@ public class UserRepository : IUserRepository
         var existingPatient = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Mail == user.Mail);
         if (existingPatient != null)
         {
-            throw new Exception("A patient with the same SSN already exists");
+            throw new Exception("A user with the same Email already exists");
         }
 
         var entityEntry = await _dbcontext.Users.AddAsync(user);
