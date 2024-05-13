@@ -28,4 +28,14 @@ public class UserRepository : IUserRepository
 
         return entityEntry.Entity; // Access the Entity property to get the added patient entity
     }
+
+    public async Task<List<User>> GetAllUsersAsynch()
+    {
+        return await _dbcontext.Users.ToListAsync();
+    }
+
+    public async Task<User> GetUserByIdAsync(int id)
+    {
+        return await _dbcontext.Users.FirstOrDefaultAsync(u => u.Id == id);
+    }
 }
