@@ -79,7 +79,7 @@ public class UserServiceTests
         serviceSetup.GetUserRepoMock().Setup(x => x.CreateUser(It.IsAny<User>())).ReturnsAsync(user);
 
         // Act
-        Func<Task> action = async () => await service.CreateUser(userCreate);
+        Func<Task> action = async () => await service.CreateUserAsync(userCreate);
         
         // Assert
         await action.Should().NotThrowAsync();
@@ -93,7 +93,7 @@ public class UserServiceTests
         var service = serviceSetup.CreateService();
         
         // Act
-        Func<Task> action = async () => await service.CreateUser(null);
+        Func<Task> action = async () => await service.CreateUserAsync(null);
         
         // Assert
         await action.Should().ThrowAsync<NullReferenceException>().WithMessage("Value cannot be null. (Parameter 'user')");
@@ -126,7 +126,7 @@ public class UserServiceTests
         };
         
         // Act
-        Func<Task> action = async () => await service.CreateUser(userCreate);
+        Func<Task> action = async () => await service.CreateUserAsync(userCreate);
         
         // Assert
         await action.Should().ThrowAsync<ValidationException>().WithMessage(errorMessage);
@@ -159,7 +159,7 @@ public class UserServiceTests
         };
         
         // Act
-        Func<Task> action = async () => await service.CreateUser(userCreate);
+        Func<Task> action = async () => await service.CreateUserAsync(userCreate);
         
         // Assert
         await action.Should().ThrowAsync<ValidationException>().WithMessage(errorMessage);
@@ -191,7 +191,7 @@ public class UserServiceTests
         };
         
         // Act
-        Func<Task> action = async () => await service.CreateUser(userCreate);
+        Func<Task> action = async () => await service.CreateUserAsync(userCreate);
         
         // Assert
         await action.Should().ThrowAsync<ValidationException>().WithMessage(message);
