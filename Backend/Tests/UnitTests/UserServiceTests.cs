@@ -6,6 +6,7 @@ using FluentAssertions;
 using FluentValidation;
 using Moq;
 using Shared;
+using Shared.DTOs.Create;
 using Shared.Helpers;
 
 namespace UnitTests;
@@ -64,7 +65,7 @@ public class UserServiceTests
         {
             FirstName = "John",
             LastName = "Doe",
-            Email = "Test@Email.com"
+            Mail = "Test@Email.com"
         };
         
         var user = new User
@@ -113,7 +114,7 @@ public class UserServiceTests
         {
             FirstName = firstName,
             LastName = "Doe",
-            Email = "Test@Email.com"
+            Mail = "Test@Email.com"
         };
             
         var user = new User
@@ -146,7 +147,7 @@ public class UserServiceTests
         {
             FirstName = "John",
             LastName = lastName,
-            Email = "Test@Email.com"
+            Mail = "Test@Email.com"
         };
             
         var user = new User
@@ -178,7 +179,7 @@ public class UserServiceTests
         {
             FirstName = "John",
             LastName = "Doe",
-            Email = mail
+            Mail = mail
         };
         
         var user = new User
