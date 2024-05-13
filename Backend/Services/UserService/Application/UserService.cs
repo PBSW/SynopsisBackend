@@ -43,4 +43,26 @@ public class UserService : IUserService
         
         return _mapper.Map<UserResponse>(createdUser);
     }
+
+    public async Task<List<UserResponse>> GetAllUsersAsync()
+    {
+        return _mapper.Map<List<UserResponse>>(await _userRepository.GetAllUsersAsynch());
+    }
+
+    public async Task<UserResponse> GetUserByIdAsync(int id)
+    {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException("id");
+        }
+        
+        var user = await _userRepository.GetUserByIdAsync(id);
+        
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+        
+        return _mapper.Map<UserResponse>(user);
+    }
 }

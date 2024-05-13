@@ -164,7 +164,7 @@ public class UserServiceTests
         // Assert
         await action.Should().ThrowAsync<ValidationException>().WithMessage(errorMessage);
     }
-
+    
     [Theory]
     [InlineData(null, "Email is null")]
     [InlineData("", "Email is required")]
@@ -197,6 +197,47 @@ public class UserServiceTests
         await action.Should().ThrowAsync<ValidationException>().WithMessage(message);
     }
     
+    // Get Tests
+    [Fact]
+    public async void GetUser_WithValidId_ShouldReturnUserResponse()
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+
+        int id = 1;
+        
+        var user = new User
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = "Doe",
+            Mail = "Test@Email.com"
+        };
+        
+        serviceSetup.GetUserRepoMock().Setup(x => x.GetUserByIdAsync(It.IsAny<int>())).ReturnsAsync(user);
+        
+        // Act
+        var result = await service.GetUserByIdAsync(id);
+        
+        // Assert
+        result.Should().NotBeNull();
+    }
+    
+    [Fact]
+    public async void GetAllUsers_ShouldReturnListOfUserResponse()
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        // Act
+        var result = await service.GetAllUsersAsync();
+        
+        // Assert
+        result.Should().NotBeNull();
+    }
+
     // Helper Classes and Methods
     private ServiceSetup CreateServiceSetup()
     {
