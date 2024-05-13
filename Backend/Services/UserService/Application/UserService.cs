@@ -23,6 +23,17 @@ public class UserService : IUserService
 
     public async Task<UserResponse> CreateUserAsync(UserCreate userCreate)
     {
-        throw new NotImplementedException();
+        var user = _mapper.Map<User>(userCreate);
+        
+        var validationResult = await _validator.ValidateAsync(user);
+        
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
+        
+        var createdUser = await _userRepository.CreateUserAsync(user);
+        
+        return _mapper.Map<UserResponse>(createdUser);
     }
 }

@@ -76,7 +76,7 @@ public class UserServiceTests
             Mail = "Test@Email.com",
         };
         
-        serviceSetup.GetUserRepoMock().Setup(x => x.CreateUser(It.IsAny<User>())).ReturnsAsync(user);
+        serviceSetup.GetUserRepoMock().Setup(x => x.CreateUserAsync(It.IsAny<User>())).ReturnsAsync(user);
 
         // Act
         Func<Task> action = async () => await service.CreateUserAsync(userCreate);
