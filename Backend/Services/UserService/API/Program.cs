@@ -2,6 +2,7 @@ using Application;
 using Application.Interface;
 using FluentValidation;
 using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,12 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAutoMapper(typeof(UserService).Assembly);
+
+//Database
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseMySql(
+    builder.Configuration.GetConnectionString("DefaultConnection"),
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+));
 
 var app = builder.Build();
 
