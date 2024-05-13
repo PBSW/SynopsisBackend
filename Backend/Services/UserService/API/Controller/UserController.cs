@@ -55,4 +55,18 @@ public class UserController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+    
+    [HttpDelete]
+    [Route("api/user/{id}")]
+    public async Task<IActionResult> DeleteUserByIdAsync([FromRoute] int id)
+    {
+        try
+        {
+            return Ok(await _userService.DeleteUserAsync(id));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }

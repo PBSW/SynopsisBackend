@@ -65,4 +65,14 @@ public class UserService : IUserService
         
         return _mapper.Map<UserResponse>(user);
     }
+
+    public async Task<bool> DeleteUserAsync(int id)
+    {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException("id");
+        }
+        
+        return await _userRepository.DeleteUserAsync(id);
+    }
 }

@@ -38,4 +38,21 @@ public class UserRepository : IUserRepository
     {
         return await _dbcontext.Users.FirstOrDefaultAsync(u => u.Id == id);
     }
+
+    public async Task<bool> DeleteUserAsync(int id)
+    {
+        var user = await _dbcontext.Users.FirstOrDefaultAsync(u => u.Id == id);
+        
+        if (user == null)
+            return false;
+        
+        // Patient exists, remove them
+        _dbcontext.Users.Remove(user);
+        int change = await _dbcontext.SaveChangesAsync();
+        
+        if (change == 0)
+            return false;
+        
+        return true;
+    }
 }
