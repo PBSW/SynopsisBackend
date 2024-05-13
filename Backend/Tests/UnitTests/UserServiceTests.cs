@@ -96,13 +96,13 @@ public class UserServiceTests
         Func<Task> action = async () => await service.CreateUserAsync(null);
         
         // Assert
-        await action.Should().ThrowAsync<NullReferenceException>().WithMessage("Value cannot be null. (Parameter 'user')");
+        await action.Should().ThrowAsync<NullReferenceException>().WithMessage("UserCreate is null");
     }
 
     [Theory]
-    [InlineData(null, "First name is null")]
-    [InlineData("", "First name is required")]
-    [InlineData(" ", "First name is required")]
+    [InlineData(null, "First Name is null")]
+    [InlineData("", "First Name is required")]
+    [InlineData(" ", "First Name is required")]
     public async void CreateUser_WithInvalidFirstName_ShouldThrowValidationExceptionWithMessage(string firstName,
         string errorMessage)
     {
@@ -133,9 +133,9 @@ public class UserServiceTests
     }
 
     [Theory]
-    [InlineData(null, "Last name is required")]
-    [InlineData("", "Last name is required")]
-    [InlineData(" ", "Last name is required")]
+    [InlineData(null, "Last Name is null")]
+    [InlineData("", "Last Name is required")]
+    [InlineData(" ", "Last Name is required")]
     public async void CreateUser_WithInvalidLastName_ShouldThrowValidationExceptionWithMessage(string lastName,
         string errorMessage)
     {
@@ -166,10 +166,10 @@ public class UserServiceTests
     }
 
     [Theory]
-    [InlineData(null, "Email can not be null")]
+    [InlineData(null, "Email is null")]
     [InlineData("", "Email is required")]
     [InlineData(" ", "Email is required")]
-    [InlineData("test", "Email is not a valid email address")]
+    [InlineData("test", "Email is not a valid Email Address")]
     public async void CreateUser_WithInvalidMail_ShouldThrowValidationExceptionWithMessage(string mail, string message)
     {
         var serviceSetup = CreateServiceSetup();

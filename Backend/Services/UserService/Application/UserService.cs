@@ -23,13 +23,18 @@ public class UserService : IUserService
 
     public async Task<UserResponse> CreateUserAsync(UserCreate userCreate)
     {
+        if (userCreate == null)
+        {
+            throw new NullReferenceException("UserCreate is null");
+        }
+        
         var user = _mapper.Map<User>(userCreate);
         
         var validationResult = await _validator.ValidateAsync(user);
         
         if (!validationResult.IsValid)
         {
-            throw new ValidationException(validationResult.Errors);
+            throw new ValidationException(validationResult.ToString());
         }
         
         var createdUser = await _userRepository.CreateUserAsync(user);
