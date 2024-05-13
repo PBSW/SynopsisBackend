@@ -27,4 +27,32 @@ public class UserController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+    
+    [HttpGet]
+    [Route("api/user")]
+    public async Task<IActionResult> GetAllUsersAsync()
+    {
+        try
+        {
+            return Ok(await _userService.GetAllUsersAsync());
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    [HttpGet]
+    [Route("api/user/{id}")]
+    public async Task<IActionResult> GetUserByIdAsync([FromRoute] int id)
+    {
+        try
+        {
+            return Ok(await _userService.GetUserByIdAsync(id));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
