@@ -1,4 +1,4 @@
-﻿using Application;
+using Application;
 using Application.Interfaces;
 using Application.Validators;
 using AutoMapper;
@@ -7,6 +7,7 @@ using FluentValidation;
 using Moq;
 using Shared;
 using Shared.Helpers;
+
 
 namespace UnitTests;
 
@@ -81,7 +82,7 @@ public class ToDoServiceTests
             return new ToDoService(_toDoRepoMock.Object, _mapper, _validator);
         }
         
-        public Mock<IToDoRepository> GetUserRepoMock()
+        public Mock<IToDoRepository> GetToDoRepoMock()
         {
             return _toDoRepoMock;
         }
