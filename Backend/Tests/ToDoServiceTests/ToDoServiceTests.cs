@@ -6,6 +6,8 @@ using FluentAssertions;
 using FluentValidation;
 using Moq;
 using Shared;
+using Shared.DTOs.Create;
+using Shared.DTOs.Response;
 using Shared.Helpers;
 
 
@@ -51,6 +53,66 @@ public class ToDoServiceTests
         
         // Assert
         action.Should().NotThrow();
+    }
+    
+    // Create Tests
+    [Fact]
+    public async void CreateToDoListAsync_WithValidToDoList_ShouldReturnToDoListResponse()
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        var createList = new ToDoListCreate
+        {
+            Title = "Test Title",
+        };
+        
+        // Act
+        var result = await service.CreateToDoListAsync(createList);
+        
+        // Assert
+        result.Should().BeOfType<ToDoListResponse>();
+    }
+
+    [Fact]
+    public async void CreateToDoListAsync_WithValidToDoList_ShouldNotThrowError()
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        var createList = new ToDoListCreate
+        {
+            Title = "Test Title",
+        };
+        
+        // Act
+        Func<Task> action = async () => await service.CreateToDoListAsync(createList);
+        
+        // Assert
+        await action.Should().NotThrowAsync();
+    }
+    
+    [Theory]
+    [InlineData("", "Title is required")]
+    [InlineData(" ", "Title is required")]
+    public async void CreateToDoListAsynch_WithInvalidTitle_ShouldThrowValidationExceptionWithMessage(string title, string errorMessage)
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        var createList = new ToDoListCreate
+        {
+            Title = title,
+        };
+        
+        // Act
+        Func<Task> action = async () => await service.CreateToDoListAsync(createList);
+        
+        // Assert
+        await action.Should().ThrowAsync<ValidationException>().WithMessage(errorMessage);
     }
     
     // Helper Classes and Methods

@@ -2,6 +2,7 @@
 using AutoMapper;
 using FluentValidation;
 using Shared;
+using Shared.DTOs.Create;
 using Shared.DTOs.Response;
 
 namespace Application;
@@ -19,7 +20,7 @@ public class ToDoService : IToDoService
         _validator = validator ?? throw new ArgumentNullException(nameof(validator));
     }
 
-    public async Task<ToDoListResponse> CreateToDoListAsync(string title)
+    public async Task<ToDoListResponse> CreateToDoListAsync(ToDoListCreate createList)
     {
         throw new NotImplementedException();
     }
