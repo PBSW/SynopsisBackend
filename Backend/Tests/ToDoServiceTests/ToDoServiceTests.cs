@@ -94,6 +94,20 @@ public class ToDoServiceTests
         await action.Should().NotThrowAsync();
     }
     
+    [Fact]
+    public async void CreateToDoListAsync_WithNullToDoList_ShouldThrowNullExceptionWithMessage()
+    {
+        // Arrange
+        var serviceSetup = CreateServiceSetup();
+        var service = serviceSetup.CreateService();
+        
+        // Act
+        Func<Task> action = async () => await service.CreateToDoListAsync(null);
+        
+        // Assert
+        await action.Should().ThrowAsync<NullReferenceException>().WithMessage("ToDoListCreate is null");
+    }
+    
     [Theory]
     [InlineData("", "Title is required")]
     [InlineData(" ", "Title is required")]

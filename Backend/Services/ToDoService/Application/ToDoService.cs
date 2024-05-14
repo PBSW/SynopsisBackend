@@ -22,6 +22,22 @@ public class ToDoService : IToDoService
 
     public async Task<ToDoListResponse> CreateToDoListAsync(ToDoListCreate createList)
     {
-        throw new NotImplementedException();
+        if (createList == null)
+        {
+            throw new NullReferenceException("ToDoListCreate is null");
+        }
+        
+        var toDoList = _mapper.Map<ToDoList>(createList);
+        
+        var validationResult = await _validator.ValidateAsync(toDoList);
+        
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.ToString());
+        }
+        
+        var createdToDoList = await _toDoRepository.CreateToDoListAsync(toDoList);
+        
+        return _mapper.Map<ToDoListResponse>(createdToDoList);
     }
 }
