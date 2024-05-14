@@ -2,6 +2,7 @@ using Application;
 using Application.Interfaces;
 using FluentValidation;
 using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +11,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Dependency Injections
 builder.Services.AddScoped<IToDoService, ToDoService>();
 builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+//Database
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseMySql(
+    builder.Configuration.GetConnectionString("DefaultConnection"),
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+));
 
 var app = builder.Build();
 

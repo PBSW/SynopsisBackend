@@ -1,5 +1,6 @@
 ﻿using Application;
 using Application.Interfaces;
+using Application.Validators;
 using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
@@ -68,7 +69,7 @@ public class ToDoServiceTests
         private readonly IMapper _mapper;
         private readonly IValidator<ToDoList> _validator;
         
-        public ServiceSetup(Mock<IToDoRepository> toDoRepoMock, IMapper mapper, IValidator<User> validator)
+        public ServiceSetup(Mock<IToDoRepository> toDoRepoMock, IMapper mapper, IValidator<ToDoList> validator)
         {
             _toDoRepoMock = toDoRepoMock;
             _mapper = mapper;
