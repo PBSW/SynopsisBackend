@@ -1,5 +1,5 @@
 ﻿using Application;
-using Application.Interface;
+using Application.Interfaces;
 using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
@@ -54,7 +54,7 @@ public class ToDoServiceTests
     // Helper Classes and Methods
     private ServiceSetup CreateServiceSetup()
     {
-        var userRepoMock = new Mock<IToDoRepository>();
+        var toDoRepoMock = new Mock<IToDoRepository>();
         var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfiles>());
         var mapper = new Mapper(mapperConfig);
         var validator = new ToDoValidator();
@@ -68,19 +68,19 @@ public class ToDoServiceTests
         private readonly IMapper _mapper;
         private readonly IValidator<User> _validator;
         
-        public ServiceSetup(Mock<IUserRepository> toDoRepoMock, IMapper mapper, IValidator<User> validator)
+        public ServiceSetup(Mock<IToDoRepository> toDoRepoMock, IMapper mapper, IValidator<User> validator)
         {
             _toDoRepoMock = toDoRepoMock;
             _mapper = mapper;
             _validator = validator;
         }
         
-        public UserService CreateService()
+        public ToDoService CreateService()
         {
-            return new UserService(_toDoRepoMock.Object, _mapper, _validator);
+            return new ToDoService(_toDoRepoMock.Object, _mapper, _validator);
         }
         
-        public Mock<IUserRepository> GetUserRepoMock()
+        public Mock<IToDoRepository> GetUserRepoMock()
         {
             return _toDoRepoMock;
         }

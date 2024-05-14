@@ -1,5 +1,6 @@
 using Application;
 using Application.Interfaces;
+using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IToDoService, ToDoService>();
+builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
 
 var app = builder.Build();
 
