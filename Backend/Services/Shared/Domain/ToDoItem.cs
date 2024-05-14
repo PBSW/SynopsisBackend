@@ -1,8 +1,8 @@
 ﻿namespace Shared;
 
-public class ToDoList
+public class ToDoItem
 {
     public int Id { get; set; }
     public string Title { get; set; }
-    public List<ToDoItem> Items { get; set; }
+    public bool IsDone { get; set; }
 }
