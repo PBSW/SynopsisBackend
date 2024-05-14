@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Shared;
 using Shared.DTOs.Response;
 
 namespace WebApplication1.Controllers;
@@ -16,6 +15,7 @@ public class ToDoListController : ControllerBase
     }
     
     [HttpPost]
+    [Route("api/todolist")]
     public async Task<ActionResult<ToDoListResponse>> CreateToDoList([FromBody] string title)
     {
         try
