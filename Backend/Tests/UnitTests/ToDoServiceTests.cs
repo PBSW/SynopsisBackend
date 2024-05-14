@@ -5,6 +5,7 @@ using FluentAssertions;
 using FluentValidation;
 using Moq;
 using Shared;
+using Shared.Helpers;
 
 namespace UnitTests;
 
