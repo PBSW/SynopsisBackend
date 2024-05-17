@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces;
-using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
 using Shared;
 
 namespace Infrastructure;
@@ -24,5 +24,27 @@ public class ToDoRepository : IToDoRepository
         }
         
         return toDoList;
+    }
+
+    public async Task<ToDoList> GetToDoListAsync(int id)
+    {
+        var toDoList = await _context.ToDoLists.FindAsync(id);
+        
+        if (toDoList == null)
+        {
+            throw new Exception("ToDoList not found");
+        }
+        
+        return toDoList;
+    }
+
+    public async Task<List<ToDoList>> GetAllToDoListsAsync()
+    {
+        return await _context.ToDoLists.ToListAsync();
+    }
+
+    public async Task<List<ToDoList>> GetAllListByUserIdAsync(int userId)
+    {
+        return _context.ToDoLists.Where(x => x.UserId == userId).ToList();
     }
 }

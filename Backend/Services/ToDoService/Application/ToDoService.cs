@@ -42,4 +42,36 @@ public class ToDoService : IToDoService
         
         return _mapper.Map<ToDoListResponse>(createdToDoList);
     }
+
+    public async Task<ToDoListResponse> GetToDoListAsync(int id)
+    {
+        if (id == 0)
+        {
+            throw new ArgumentException("Id is 0");
+        }
+        
+        ToDoList toDoList = await _toDoRepository.GetToDoListAsync(id);
+
+        ToDoListResponse returnList = _mapper.Map<ToDoListResponse>(toDoList);
+
+        return returnList;
+    }
+
+    public async Task<List<ToDoListResponse>> GetAllToDoListsAsync()
+    {
+        List<ToDoList> toDoList = await _toDoRepository.GetAllToDoListsAsync();
+
+        List<ToDoListResponse> returnList = _mapper.Map<List<ToDoListResponse>>(toDoList);
+
+        return returnList;
+    }
+
+    public async Task<List<ToDoListResponse>> GetAllListByUserIdAsync(int userId)
+    {
+        List<ToDoList> toDoList = await _toDoRepository.GetAllListByUserIdAsync(userId);
+        
+        List<ToDoListResponse> returnList = _mapper.Map<List<ToDoListResponse>>(toDoList);
+        
+        return returnList;
+    }
 }
