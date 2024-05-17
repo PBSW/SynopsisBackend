@@ -29,6 +29,8 @@ public class ToDoService : IToDoService
         
         var toDoList = _mapper.Map<ToDoList>(createList);
         
+        toDoList.Items = new List<ToDoItem>();
+        
         var validationResult = await _validator.ValidateAsync(toDoList);
         
         if (!validationResult.IsValid)

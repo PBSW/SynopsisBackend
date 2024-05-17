@@ -10,10 +10,19 @@ public class ToDoRepository : IToDoRepository
     public ToDoRepository(DatabaseContext context)
     {
         _context = context;
+        _context.Database.EnsureCreated();
     }
 
-    public Task<ToDoList> CreateToDoListAsync(ToDoList toDoList)
+    public async Task<ToDoList> CreateToDoListAsync(ToDoList toDoList)
     {
-        throw new NotImplementedException();
+        await _context.ToDoLists.AddAsync(toDoList);
+        await _context.SaveChangesAsync();
+        
+        if (toDoList.Id == 0)
+        {
+            throw new Exception("Failed to create ToDoList");
+        }
+        
+        return toDoList;
     }
 }
