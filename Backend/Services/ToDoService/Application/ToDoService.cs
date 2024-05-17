@@ -29,7 +29,7 @@ public class ToDoService : IToDoService
         
         var toDoList = _mapper.Map<ToDoList>(createList);
         
-        toDoList.Items = new List<ToDoItem>();
+        toDoList.Items = new List<Item>();
         
         var validationResult = await _validator.ValidateAsync(toDoList);
         
