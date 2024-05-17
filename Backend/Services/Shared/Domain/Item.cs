@@ -1,6 +1,6 @@
 ﻿namespace Shared;
 
-public class ToDoItem
+public class Item
 {
     public int Id { get; set; }
     public string Title { get; set; }

@@ -6,5 +6,5 @@ public class ToDoList
     public string Title { get; set; }
     public int UserId { get; set; }
     public DateTime DateCreated { get; set; }
-    public List<ToDoItem> Items { get; set; }
+    public List<Item> Items { get; set; }
 }
