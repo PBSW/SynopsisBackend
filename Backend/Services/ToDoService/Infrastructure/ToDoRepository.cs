@@ -40,7 +40,7 @@ public class ToDoRepository : IToDoRepository
 
     public async Task<List<ToDoList>> GetAllToDoListsAsync()
     {
-        return await _context.ToDoLists.ToListAsync();
+        return await _context.ToDoLists.Include(l => l.Items).ToListAsync();
     }
 
     public async Task<List<ToDoList>> GetAllListByUserIdAsync(int userId)

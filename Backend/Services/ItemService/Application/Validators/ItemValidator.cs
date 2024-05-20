@@ -3,9 +3,10 @@ using Shared;
 
 namespace Application.Validators;
 
-public class ItemValidator : AbstractValidator<Item>
+public class ItemListValidator : AbstractValidator<List<Item>>
 {
-    public ItemValidator()
+    public ItemListValidator()
     {
     }
 }
+

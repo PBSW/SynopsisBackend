@@ -15,6 +15,14 @@ services:
     ports:
       - "8083:8080"
 
+  item-service:
+    container_name: SIS-ItemService
+    build:
+      context: .
+      dockerfile: ./Backend/Services/ItemService/API/Dockerfile
+    ports:
+      - "8084:8080"
+
   user-db:
     container_name: SIS-UserDB
     image: mysql:5.7
