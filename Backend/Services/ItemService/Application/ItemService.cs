@@ -45,4 +45,19 @@ public class ItemService : IItemService
         
         return _mapper.Map<List<ItemResponse>>(itemsToReturn);
     }
+
+    public async Task<List<ItemResponse>> GetAllItemsAsync()
+    {
+        return _mapper.Map<List<ItemResponse>>(await _itemRepository.GetAllItemsAsync());
+    }
+
+    public async Task<ItemResponse> GetItemAsync(int id)
+    {
+        return _mapper.Map<ItemResponse>(await _itemRepository.GetItemAsync(id));
+    }
+
+    public async Task<List<ItemResponse>> GetAllItemsByToDoListIdAsync(int toDoListId)
+    {
+        return _mapper.Map<List<ItemResponse>>(await _itemRepository.GetAllItemsByToDoListIdAsync(toDoListId));
+    }
 }

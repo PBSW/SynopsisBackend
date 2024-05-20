@@ -26,4 +26,43 @@ public class ItemController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+    
+    [HttpGet]
+    [Route("api/items")]
+    public async Task<IActionResult> GetAllItems()
+    {
+        try
+        {
+            return Ok(await _itemService.GetAllItemsAsync());
+        } catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    [HttpGet]
+    [Route("api/items/{id}")]
+    public async Task<IActionResult> GetItem([FromRoute] int id)
+    {
+        try
+        {
+            return Ok(await _itemService.GetItemAsync(id));
+        } catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    [HttpGet]
+    [Route("api/items/todolist/{toDoListId}")]
+    public async Task<IActionResult> GetAllItemsByToDoListId([FromRoute] int toDoListId)
+    {
+        try
+        {
+            return Ok(await _itemService.GetAllItemsByToDoListIdAsync(toDoListId));
+        } catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }

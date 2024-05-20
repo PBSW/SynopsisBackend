@@ -38,4 +38,19 @@ public class ItemRepository : IItemRepository
 
         return itemsToAdd;
     }
+
+    public async Task<List<Item>> GetAllItemsAsync()
+    {
+        return await _context.Items.ToListAsync();
+    }
+    
+    public async Task<Item> GetItemAsync(int id)
+    {
+        return await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
+    }
+
+    public async Task<List<Item>> GetAllItemsByToDoListIdAsync(int toDoListId)
+    {
+        return await _context.Items.Where(i => i.ToDoListId == toDoListId).ToListAsync();
+    }
 }
