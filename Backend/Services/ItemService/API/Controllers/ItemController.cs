@@ -84,4 +84,16 @@ public class ItemController : ControllerBase
     }
     
     // Update
+    [HttpPut]
+    [Route("api/items/{id}")]
+    public async Task<IActionResult> UpdateItem([FromRoute] int id, [FromBody] ItemCreate item)
+    {
+        try
+        {
+            return Ok(await _itemService.UpdateItemAsync(id, item));
+        } catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
