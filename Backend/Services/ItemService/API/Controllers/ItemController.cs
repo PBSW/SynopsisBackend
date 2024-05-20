@@ -14,6 +14,7 @@ public class ItemController : ControllerBase
         _itemService = itemService ?? throw new ArgumentNullException(nameof(itemService));
     }
     
+    // Setters
     [HttpPost]
     [Route("api/items")]
     public async Task<IActionResult> CreateItem([FromBody] List<ItemCreate> items)
@@ -27,6 +28,8 @@ public class ItemController : ControllerBase
         }
     }
     
+    
+    // Getters
     [HttpGet]
     [Route("api/items")]
     public async Task<IActionResult> GetAllItems()
@@ -65,4 +68,20 @@ public class ItemController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+    
+    // Delete
+    [HttpDelete]
+    [Route("api/items/{id}")]
+    public async Task<IActionResult> DeleteItem([FromRoute] int id)
+    {
+        try
+        {
+            return Ok(await _itemService.DeleteItemAsync(id));
+        } catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    // Update
 }

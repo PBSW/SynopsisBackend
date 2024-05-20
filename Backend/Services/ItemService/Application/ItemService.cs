@@ -60,4 +60,9 @@ public class ItemService : IItemService
     {
         return _mapper.Map<List<ItemResponse>>(await _itemRepository.GetAllItemsByToDoListIdAsync(toDoListId));
     }
+
+    public async Task<bool> DeleteItemAsync(int id)
+    {
+        return await _itemRepository.DeleteItemAsync(id);
+    }
 }
