@@ -54,6 +54,20 @@ public class ItemRepository : IItemRepository
         return await _context.Items.Where(i => i.ToDoListId == toDoListId).ToListAsync();
     }
 
+    public async Task<Item> UpdateItemAsync(int id, Item itemToUpdate)
+    {
+        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
+        
+        if (item == null)
+        {
+            return null;
+        }
+        
+        await _context.SaveChangesAsync();
+        
+        return item;
+    }
+
     public async Task<bool> DeleteItemAsync(int id)
     {
         var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
