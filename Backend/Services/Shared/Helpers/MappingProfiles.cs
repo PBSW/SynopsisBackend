@@ -15,5 +15,9 @@ public class MappingProfiles : Profile
         // ToDoList
         CreateMap<ToDoListCreate, ToDoList>();
         CreateMap<ToDoList, ToDoListResponse>();
+        
+        // Item
+        CreateMap<ItemCreate, Item>();
+        CreateMap<Item, ItemResponse>();
     }
 }
