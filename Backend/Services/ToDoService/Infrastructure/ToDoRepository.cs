@@ -28,7 +28,7 @@ public class ToDoRepository : IToDoRepository
 
     public async Task<ToDoList> GetToDoListAsync(int id)
     {
-        var toDoList = await _context.ToDoLists.FindAsync(id);
+        var toDoList = await _context.ToDoLists.Include(i => i.Items).Where(l => l.Id == id).FirstOrDefaultAsync();
         
         if (toDoList == null)
         {
@@ -45,6 +45,6 @@ public class ToDoRepository : IToDoRepository
 
     public async Task<List<ToDoList>> GetAllListByUserIdAsync(int userId)
     {
-        return _context.ToDoLists.Where(x => x.UserId == userId).ToList();
+        return _context.ToDoLists.Include(i => i.Items).Where(x => x.UserId == userId).ToList();
     }
 }
