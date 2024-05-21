@@ -11,8 +11,7 @@ namespace Infrastructure;
 public class AuthRepository : IAuthRepository
 {
     private readonly DatabaseContext _context;
-    private string BaseUrl = "http://user-service:8080";
-    
+
     public AuthRepository(DatabaseContext context)
     {
         _context = context;

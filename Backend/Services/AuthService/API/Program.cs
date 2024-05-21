@@ -3,7 +3,7 @@ using Application.Helpers;
 using Application.Interfaces;
 using FluentValidation;
 using Infrastructure;
-using Microsoft.AspNetCore.Identity;
+using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +20,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJWTProvider, JWTProvider>();
+builder.Services.AddScoped<IHttpRepository, HttpRepository>();
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
