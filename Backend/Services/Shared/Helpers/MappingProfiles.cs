@@ -8,6 +8,9 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
+        // Auth
+        CreateMap<AuthCreate, AuthUser>();
+
         // User
         CreateMap<UserCreate, User>();
         CreateMap<User, UserResponse>();
