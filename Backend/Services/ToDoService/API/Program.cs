@@ -2,6 +2,7 @@ using Application;
 using Application.Interfaces;
 using FluentValidation;
 using Infrastructure;
+using Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +14,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
+// Connection Options
+builder.Services.Configure<ConnectionOptions>(builder.Configuration.GetSection("HttpConnectionOptions"));
+
 // Dependency Injections
 builder.Services.AddScoped<IToDoService, ToDoService>();
 builder.Services.AddScoped<IToDoRepository, ToDoRepository>();
+builder.Services.AddScoped<IHttpRepository, HttpRepository>();
 
 builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -56,6 +56,20 @@ public class UserController : ControllerBase
         }
     }
     
+    [HttpGet]
+    [Route("api/user/exists/{id}")]
+    public async Task<IActionResult> DoesUserExistByIdAsync([FromRoute] int id)
+    {
+        try
+        {
+            return Ok(await _userService.DoesUserExistByIdAsync(id));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
     [HttpDelete]
     [Route("api/user/{id}")]
     public async Task<IActionResult> DeleteUserByIdAsync([FromRoute] int id)

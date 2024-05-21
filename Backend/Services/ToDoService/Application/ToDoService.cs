@@ -12,12 +12,14 @@ public class ToDoService : IToDoService
     private readonly IToDoRepository _toDoRepository;
     private readonly IMapper _mapper;
     private readonly IValidator<ToDoList> _validator;
+    private readonly IHttpRepository _httpRepository;
     
-    public ToDoService(IToDoRepository toDoRepository, IMapper mapper, IValidator<ToDoList> validator)
+    public ToDoService(IToDoRepository toDoRepository, IMapper mapper, IValidator<ToDoList> validator, IHttpRepository httpRepository)
     {
         _toDoRepository = toDoRepository ?? throw new ArgumentNullException(nameof(toDoRepository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _validator = validator ?? throw new ArgumentNullException(nameof(validator));
+        _httpRepository = httpRepository ?? throw new ArgumentNullException(nameof(httpRepository));
     }
 
     public async Task<ToDoListResponse> CreateToDoListAsync(ToDoListCreate createList)
@@ -36,6 +38,13 @@ public class ToDoService : IToDoService
         if (!validationResult.IsValid)
         {
             throw new ValidationException(validationResult.ToString());
+        }
+        
+        bool userExists = await _httpRepository.IsUser(toDoList.UserId);
+        
+        if (!userExists)
+        {
+            throw new ArgumentException("User does not exist");
         }
         
         var createdToDoList = await _toDoRepository.CreateToDoListAsync(toDoList);

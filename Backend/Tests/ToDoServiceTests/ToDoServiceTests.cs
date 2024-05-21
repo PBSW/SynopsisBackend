@@ -19,7 +19,7 @@ public class ToDoServiceTests
     public void CreateService_WithNullRepo_ShouldThrowNullExceptionWithMessage()
     {
         // Act
-        Action action = () => new ToDoService(null, new Mock<IMapper>().Object, new Mock<IValidator<ToDoList>>().Object);
+        Action action = () => new ToDoService(null, new Mock<IMapper>().Object, new Mock<IValidator<ToDoList>>().Object, new Mock<IHttpRepository>().Object);
         
         // Assert
         action.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'toDoRepository')");
@@ -29,7 +29,7 @@ public class ToDoServiceTests
     public void CreateService_WithNullMapper_ShouldThrowNullExceptionWithMessage()
     {
         // Act
-        Action action = () => new ToDoService(new Mock<IToDoRepository>().Object, null, new Mock<IValidator<ToDoList>>().Object);
+        Action action = () => new ToDoService(new Mock<IToDoRepository>().Object, null, new Mock<IValidator<ToDoList>>().Object, new Mock<IHttpRepository>().Object);
         
         // Assert
         action.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'mapper')");
@@ -39,7 +39,7 @@ public class ToDoServiceTests
     public void CreateService_WithNullValidator_ShouldThrowNullExceptionWithMessage()
     {
         // Act
-        Action action = () => new ToDoService(new Mock<IToDoRepository>().Object, new Mock<IMapper>().Object, null);
+        Action action = () => new ToDoService(new Mock<IToDoRepository>().Object, new Mock<IMapper>().Object, null, new Mock<IHttpRepository>().Object);
         
         // Assert
         action.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'validator')");
@@ -49,7 +49,7 @@ public class ToDoServiceTests
     public void CreateService_WithValidParameters_ShouldNotThrowException()
     {
         // Act
-        Action action = () => new ToDoService(new Mock<IToDoRepository>().Object, new Mock<IMapper>().Object, new Mock<IValidator<ToDoList>>().Object);
+        Action action = () => new ToDoService(new Mock<IToDoRepository>().Object, new Mock<IMapper>().Object, new Mock<IValidator<ToDoList>>().Object, new Mock<IHttpRepository>().Object);
         
         // Assert
         action.Should().NotThrow();
@@ -136,8 +136,9 @@ public class ToDoServiceTests
         var mapperConfig = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfiles>());
         var mapper = new Mapper(mapperConfig);
         var validator = new ToDoValidator();
+        var httpRepoMock = new Mock<IHttpRepository>();
         
-        return new ServiceSetup(toDoRepoMock, mapper, validator);
+        return new ServiceSetup(toDoRepoMock, mapper, validator, httpRepoMock);
     }
 
     private class ServiceSetup
@@ -145,17 +146,19 @@ public class ToDoServiceTests
         private readonly Mock<IToDoRepository> _toDoRepoMock;
         private readonly IMapper _mapper;
         private readonly IValidator<ToDoList> _validator;
+        private readonly Mock<IHttpRepository> _httpRepoMock;
         
-        public ServiceSetup(Mock<IToDoRepository> toDoRepoMock, IMapper mapper, IValidator<ToDoList> validator)
+        public ServiceSetup(Mock<IToDoRepository> toDoRepoMock, IMapper mapper, IValidator<ToDoList> validator, Mock<IHttpRepository> httpRepoMock)
         {
             _toDoRepoMock = toDoRepoMock;
             _mapper = mapper;
             _validator = validator;
+            _httpRepoMock = httpRepoMock;
         }
-        
+
         public ToDoService CreateService()
         {
-            return new ToDoService(_toDoRepoMock.Object, _mapper, _validator);
+            return new ToDoService(_toDoRepoMock.Object, _mapper, _validator, _httpRepoMock.Object);
         }
         
         public Mock<IToDoRepository> GetToDoRepoMock()
