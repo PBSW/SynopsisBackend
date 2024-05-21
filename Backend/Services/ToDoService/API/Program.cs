@@ -2,6 +2,7 @@ using Application;
 using Application.Interfaces;
 using FluentValidation;
 using Infrastructure;
+using Infrastructure.Helpers;
 using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
+
+// Connection Options
+builder.Services.Configure<ConnectionOptions>(builder.Configuration.GetSection("HttpConnectionOptions"));
 
 // Dependency Injections
 builder.Services.AddScoped<IToDoService, ToDoService>();
