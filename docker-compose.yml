@@ -1,4 +1,12 @@
 services:
+  auth-service:
+    container_name: SIS-AuthService
+    build:
+      context: .
+      dockerfile: ./Backend/Services/AuthService/API/Dockerfile
+    ports:
+      - "8081:8080"
+  
   user-service:
     container_name: SIS-UserService
     build:
@@ -22,6 +30,19 @@ services:
       dockerfile: ./Backend/Services/ItemService/API/Dockerfile
     ports:
       - "8084:8080"
+
+  auth-db:
+    container_name: SIS-AuthDB
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: database_user
+      MYSQL_PASSWORD: Password1!
+    ports:
+      - "3306:3306"
+    volumes:
+      - auth_db:/var/lib/mysql
 
   user-db:
     container_name: SIS-UserDB
@@ -50,5 +71,6 @@ services:
       - todo_db:/var/lib/mysql
   
 volumes:
+  auth_db:
   user_db:
   todo_db:
