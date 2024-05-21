@@ -66,6 +66,16 @@ public class UserService : IUserService
         return _mapper.Map<UserResponse>(user);
     }
 
+    public Task<bool> DoesUserExistByIdAsync(int id)
+    {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException("id");
+        }
+        
+        return _userRepository.DoesUserExistByIdAsync(id);
+    }
+
     public async Task<bool> DeleteUserAsync(int id)
     {
         if (id <= 0)
