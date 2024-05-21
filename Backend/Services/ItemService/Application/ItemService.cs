@@ -4,6 +4,7 @@ using FluentValidation;
 using Shared;
 using Shared.DTOs.Create;
 using Shared.DTOs.Response;
+using Shared.DTOs.Update;
 
 namespace Application;
 
@@ -13,7 +14,7 @@ public class ItemService : IItemService
     private readonly IMapper _mapper;
     private readonly IValidator<List<Item>> _validator;
     private readonly IValidator<Item> _validatorItem;
-    
+
     public ItemService(IItemRepository itemRepository, IMapper mapper, IValidator<List<Item>> validator, IValidator<Item> validatorItem)
     {
         _itemRepository = itemRepository ?? throw new ArgumentNullException(nameof(itemRepository));
@@ -63,7 +64,7 @@ public class ItemService : IItemService
         return _mapper.Map<List<ItemResponse>>(await _itemRepository.GetAllItemsByToDoListIdAsync(toDoListId));
     }
 
-    public async Task<ItemResponse> UpdateItemAsync(int id, ItemCreate item)
+    public async Task<ItemResponse> UpdateItemAsync(ItemUpdate item)
     {
         var itemToUpdate = _mapper.Map<Item>(item);
         
@@ -74,7 +75,9 @@ public class ItemService : IItemService
             throw new ValidationException(validationResult.ToString());
         }
         
-        var updatedItem = await _itemRepository.UpdateItemAsync(id, itemToUpdate);
+        itemToUpdate.DateUpdated = DateTime.Now;
+        
+        var updatedItem = await _itemRepository.UpdateItemAsync(itemToUpdate);
         
         return _mapper.Map<ItemResponse>(updatedItem);
     }

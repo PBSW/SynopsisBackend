@@ -26,3 +26,15 @@ public class ItemValidator : AbstractValidator<Item>
         RuleFor(i => i.ToDoListId).GreaterThan(0).WithMessage("Item ToDoListId must be greater than 0");
     }
 }
+
+public class ItemValidatorUpdate : AbstractValidator<Item>
+{
+    public ItemValidatorUpdate()
+    {
+        CascadeMode = CascadeMode.Stop;
+        
+        RuleFor(i => i).NotNull().WithMessage("Item cannot be null");
+        RuleFor(i => i.DateCreated).NotNull().WithMessage("Item date created cannot be null");
+        RuleFor(i => i.ToDoListId).GreaterThan(0).WithMessage("Item ToDoListId must be greater than 0");
+    }
+}

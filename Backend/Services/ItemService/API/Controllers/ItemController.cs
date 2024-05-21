@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs.Create;
+using Shared.DTOs.Update;
 
 namespace API.Controllers;
 
@@ -85,12 +86,12 @@ public class ItemController : ControllerBase
     
     // Update
     [HttpPut]
-    [Route("api/items/{id}")]
-    public async Task<IActionResult> UpdateItem([FromRoute] int id, [FromBody] ItemCreate item)
+    [Route("api/items")]
+    public async Task<IActionResult> UpdateItem([FromBody] ItemUpdate item)
     {
         try
         {
-            return Ok(await _itemService.UpdateItemAsync(id, item));
+            return Ok(await _itemService.UpdateItemAsync(item));
         } catch (Exception e)
         {
             return BadRequest(e.Message);

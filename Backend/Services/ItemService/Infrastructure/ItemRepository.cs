@@ -54,15 +54,19 @@ public class ItemRepository : IItemRepository
         return await _context.Items.Where(i => i.ToDoListId == toDoListId).ToListAsync();
     }
 
-    public async Task<Item> UpdateItemAsync(int id, Item itemToUpdate)
+    public async Task<Item> UpdateItemAsync(Item itemToUpdate)
     {
-        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
+        var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == itemToUpdate.Id);
         
         if (item == null)
         {
             return null;
         }
         
+        item.Title = itemToUpdate.Title;
+        item.DateUpdated = itemToUpdate.DateUpdated;
+        item.IsDone = itemToUpdate.IsDone;
+
         await _context.SaveChangesAsync();
         
         return item;
