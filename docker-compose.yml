@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: ./Backend/Services/AuthService/API/Dockerfile
+    depends_on:
+        - user-service
+        - auth-db
     ports:
       - "8081:8080"
   
@@ -12,6 +15,8 @@ services:
     build:
       context: .
       dockerfile: ./Backend/Services/UserService/API/Dockerfile
+    depends_on:
+      - user-db
     ports:
       - "8082:8080" 
 
@@ -20,6 +25,9 @@ services:
     build:
       context: .
       dockerfile: ./Backend/Services/ToDoService/API/Dockerfile
+    depends_on:
+        - user-service
+        - todo-db
     ports:
       - "8083:8080"
 
@@ -28,6 +36,9 @@ services:
     build:
       context: .
       dockerfile: ./Backend/Services/ItemService/API/Dockerfile
+    depends_on:
+        - todo-service
+        - todo-db
     ports:
       - "8084:8080"
 
