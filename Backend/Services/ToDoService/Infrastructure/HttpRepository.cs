@@ -1,6 +1,7 @@
-﻿using Infrastructure.Helpers;
-using Infrastructure.Interfaces;
+﻿using Application.Interfaces;
+using Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
+using RestSharp;
 
 namespace Infrastructure;
 
@@ -12,8 +13,19 @@ public class HttpRepository : IHttpRepository
     {
         _baseUrl = baseUrl.Value.UserServiceUrl;
     }
-    public Task<bool> IsUser(int id)
+    public async Task<bool> IsUser(int id)
     {
-        throw new NotImplementedException();
+        var client = new RestClient(_baseUrl);
+        var request = new RestRequest($"api/user/exists/{id}", Method.Get);
+        request.AddHeader("Content-Type", "application/json");
+        
+        var response = await client.ExecuteAsync<bool>(request);
+        
+        if (response.IsSuccessful)
+        {
+            return response.Data;
+        }
+        
+        throw new Exception("Unable to connect to UserService: " + response.ErrorMessage);
     }
 }

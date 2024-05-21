@@ -3,7 +3,6 @@ using Application.Interfaces;
 using FluentValidation;
 using Infrastructure;
 using Infrastructure.Helpers;
-using Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
