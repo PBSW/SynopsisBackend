@@ -3,16 +3,21 @@ services:
     container_name: SIS-YARP-Gateway
     build:
       context: .
-      dockerfile: ./Backend/Gateway/YARP/Dockerfile
+      dockerfile: ./Backend/Gateway/YARP-Gateway/Dockerfile
     ports:
-      - "49152:8080"
-    depends_on:
-      - auth-service
-      - user-service
-      - todo-service
-      - item-service
+      - "49151:8080"
     networks:
       - app-network
+  
+  ocelot-gateway:
+    container_name: SIS-Ocelot-Gateway
+    build:
+      context: .
+      dockerfile: ./Backend/Gateway/Ocelot-Gateway/Dockerfile
+    ports:
+        - "49152:8080"
+    networks:
+        - app-network
   
   auth-service:
     container_name: SIS-AuthService
@@ -22,6 +27,8 @@ services:
     depends_on:
         - user-service
         - auth-db
+        - ocelot-gateway
+        - yarp-gateway
     ports:
       - "49153:8080"
     networks:
@@ -34,6 +41,8 @@ services:
       dockerfile: ./Backend/Services/UserService/API/Dockerfile
     depends_on:
       - user-db
+      - ocelot-gateway
+      - yarp-gateway
     ports:
       - "49154:8080" 
     networks:
@@ -47,6 +56,8 @@ services:
     depends_on:
         - user-service
         - todo-db
+        - ocelot-gateway
+        - yarp-gateway
     ports:
       - "49155:8080"
     networks:
@@ -59,7 +70,8 @@ services:
       dockerfile: ./Backend/Services/ItemService/API/Dockerfile
     depends_on:
         - todo-service
-        - todo-db
+        - ocelot-gateway
+        - yarp-gateway
     ports:
       - "49156:8080"
     networks:
