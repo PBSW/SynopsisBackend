@@ -11,7 +11,8 @@ public class MappingProfiles : Profile
     {
         // Auth
         CreateMap<AuthCreate, AuthUser>();
-
+        CreateMap<AuthCreate, UserCreate>();
+        
         // User
         CreateMap<UserCreate, User>();
         CreateMap<User, UserResponse>();

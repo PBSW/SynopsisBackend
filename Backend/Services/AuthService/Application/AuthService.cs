@@ -8,6 +8,7 @@ using Shared;
 using Shared.DTOs;
 using Shared.DTOs.Create;
 using Shared.DTOs.Requests;
+using Shared.DTOs.Response;
 
 namespace Application;
 
@@ -19,23 +20,26 @@ public class AuthService : IAuthService
     private readonly IPasswordHasher _passwordHasher;
     private readonly IAuthRepository _authRepository;
     private readonly IMapper _mapper;
+    private readonly IHttpRepository _httpRepo;
     
     
     public AuthService(
         IJWTProvider jwtProvider,
         IPasswordHasher passwordHasher,
         IAuthRepository authRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IHttpRepository httpRepo)
     {
         _jwtProvider = jwtProvider ?? throw new NullReferenceException("jwtProvider is null");
         _passwordHasher = passwordHasher ?? throw new NullReferenceException("passwordHasher is null");
         _authRepository = authRepository ?? throw new NullReferenceException("authRepository is null");
         _mapper = mapper ?? throw new NullReferenceException("mapper is null");
+        _httpRepo = httpRepo ?? throw new NullReferenceException("httpRepository is null");
     }
 
     public async Task<IActionResult> Login(AuthLogin dto)
     {
-        AuthUser authUser = await _authRepository.FindUser(dto.Username);
+        AuthUser authUser = await _authRepository.FindUserByUsername(dto.Username);
         
         if (authUser == null)
         {
@@ -47,17 +51,6 @@ public class AuthService : IAuthService
         if (!isAuthenticated)
         {
             return await Task.FromResult<IActionResult>(new UnauthorizedResult());
-        }
-        
-        // Generate a JWT token
-        string jwtToken = GenerateAdminToken();
-        
-        // Get the user ID from the user service
-        UserRequest user = await _authRepository.GetUserId(authUser.Username, jwtToken);
-        
-        if (user == null)
-        {
-            throw new NullReferenceException("User not found in user service");
         }
         
         string token = _jwtProvider.GenerateToken(authUser.UserId, authUser.Username);
@@ -72,16 +65,24 @@ public class AuthService : IAuthService
             throw new ArgumentNullException("Dto is null");
         }
         
+        bool isAuthUser = await _authRepository.IsAuthUser(dto.Username);
+        
+        if (isAuthUser)
+        {
+            throw new ArgumentException("Login already exists");
+        }
+        
         AuthUser authUser = _mapper.Map<AuthCreate, AuthUser>(dto);
+        
+        UserCreate user = _mapper.Map<AuthCreate, UserCreate>(dto);
+        
+        UserResponse returnedUser = await _httpRepo.CreateUser(user);
         
         authUser.Salt = GenerateSalt();
         authUser.HashedPassword = await _passwordHasher.HashPassword(dto.PlainPassword, authUser.Salt);
+        authUser.UserId = returnedUser.Id;
         
-        UserCreate userDTO = _mapper.Map<AuthUser, UserCreate>(authUser);
-        
-        string jwtToken = GenerateAdminToken();
-        
-        return await _authRepository.Register(authUser, userDTO, jwtToken);
+        return await _authRepository.Register(authUser);
     }
 
     /*

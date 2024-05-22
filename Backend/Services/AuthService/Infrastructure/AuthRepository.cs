@@ -1,9 +1,6 @@
 ﻿using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using RestSharp;
 using Shared;
-using Shared.DTOs.Create;
 using Shared.DTOs.Requests;
 
 namespace Infrastructure;
@@ -18,18 +15,20 @@ public class AuthRepository : IAuthRepository
         _context.Database.EnsureCreated();
     }
     
-    public async Task<bool> Register(AuthUser authUser, UserCreate userDTO, string jwtToken)
+    public async Task<bool> Register(AuthUser authUser)
     {
-        throw new NotImplementedException();
-    }
-    
-    public async Task<AuthUser> FindUser(string username)
-    {
-        throw new NotImplementedException();
+        await _context.AuthUsers.AddAsync(authUser);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
-    public async Task<UserRequest> GetUserId(string username, string jwtToken)
+    public async Task<AuthUser> FindUserByUsername(string username)
     {
-        throw new NotImplementedException();
+        return await _context.AuthUsers.FirstOrDefaultAsync(x => x.Username == username);
+    }
+
+    public async Task<bool> IsAuthUser(string username)
+    {
+        return await _context.AuthUsers.AnyAsync(x => x.Username == username);
     }
 }
