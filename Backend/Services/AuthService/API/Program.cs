@@ -3,10 +3,15 @@ using Application.Helpers;
 using Application.Interfaces;
 using FluentValidation;
 using Infrastructure;
-using Infrastructure.Interfaces;
+using Infrastructure.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Connection Options
+builder.Services.Configure<HttpConnectionOptions>(builder.Configuration.GetSection("HttpConnectionOptions"));
+
+builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection("JwtSettings"));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,12 +1,20 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Helpers;
 
 public class JWTProvider : IJWTProvider
 {
+    private readonly string _secret;
+    
+    public JWTProvider(IOptions<JWTOptions> options)
+    {
+        _secret = options.Value.Secret;
+    }
+    
     public string GenerateToken(int id, string username, IEnumerable<Claim> additionalClaims = null)
     {
         // Add standard claims (e.g., user ID, username)
@@ -25,7 +33,7 @@ public class JWTProvider : IJWTProvider
         }
 
         // Specify signing credentials (replace "secret" with your actual secret key)
-        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsStupidAndShouldntBeStoredHere"));
+        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
         var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
         // Specify token parameters

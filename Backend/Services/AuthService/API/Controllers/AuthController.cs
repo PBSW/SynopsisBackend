@@ -8,7 +8,7 @@ namespace API.Controllers;
 
 
 [ApiController]
-[Route("auth")]
+[Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -33,15 +33,15 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] AuthCreate dto)
+    public async Task<IActionResult> Register([FromBody] AuthCreate dto)
+    {
+        try
         {
-            try
-            {
-                return Ok(await _authService.Register(dto));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(await _authService.Register(dto));
         }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }

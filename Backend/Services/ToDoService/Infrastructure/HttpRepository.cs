@@ -11,7 +11,7 @@ public class HttpRepository : IHttpRepository
     
     public HttpRepository(IOptions<ConnectionOptions> baseUrl)
     {
-        _baseUrl = baseUrl.Value.UserServiceUrl;
+        _baseUrl = baseUrl.Value.UserServiceUrl ?? throw new ArgumentException("UserServiceUrl is null");
     }
     public async Task<bool> IsUser(int id)
     {
