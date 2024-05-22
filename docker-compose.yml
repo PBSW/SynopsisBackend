@@ -5,12 +5,14 @@ services:
       context: .
       dockerfile: ./Backend/Gateway/YARP/Dockerfile
     ports:
-      - "8080:8080"
+      - "49152:8080"
     depends_on:
       - auth-service
       - user-service
       - todo-service
       - item-service
+    networks:
+      - app-network
   
   auth-service:
     container_name: SIS-AuthService
@@ -21,7 +23,9 @@ services:
         - user-service
         - auth-db
     ports:
-      - "8090:8091"
+      - "49153:8080"
+    networks:
+      - app-network
   
   user-service:
     container_name: SIS-UserService
@@ -31,7 +35,9 @@ services:
     depends_on:
       - user-db
     ports:
-      - "8091:8091" 
+      - "49154:8080" 
+    networks:
+      - app-network
 
   todo-service:
     container_name: SIS-ListService
@@ -42,7 +48,9 @@ services:
         - user-service
         - todo-db
     ports:
-      - "8092:8092"
+      - "49155:8080"
+    networks:
+      - app-network
 
   item-service:
     container_name: SIS-ItemService
@@ -53,7 +61,9 @@ services:
         - todo-service
         - todo-db
     ports:
-      - "8093:8093"
+      - "49156:8080"
+    networks:
+      - app-network
 
   auth-db:
     container_name: SIS-AuthDB
@@ -67,6 +77,8 @@ services:
       - "3306:3306"
     volumes:
       - auth_db:/var/lib/mysql
+    networks:
+      - app-network
 
   user-db:
     container_name: SIS-UserDB
@@ -77,9 +89,11 @@ services:
       MYSQL_USER: database_user
       MYSQL_PASSWORD: Password1!
     ports:
-      - "3307:3307"
+      - "3307:3306"
     volumes:
       - user_db:/var/lib/mysql
+    networks:
+      - app-network
         
   todo-db:
     container_name: SIS-ToDoDB
@@ -90,11 +104,17 @@ services:
       MYSQL_USER: database_user
       MYSQL_PASSWORD: Password1!
     ports:
-      - "3308:3308"
+      - "3308:3306"
     volumes:
       - todo_db:/var/lib/mysql
+    networks:
+      - app-network
   
 volumes:
   auth_db:
   user_db:
   todo_db:
+    
+networks:
+  app-network:
+    driver: bridge
