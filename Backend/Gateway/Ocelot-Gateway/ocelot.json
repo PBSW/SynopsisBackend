@@ -17,6 +17,10 @@
       "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
       "DownstreamPathTemplate": "/api/user/{everything}",
       "DownstreamScheme": "http",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
       "DownstreamHostAndPorts": [
         {
           "Host": "user-service",
@@ -29,6 +33,10 @@
       "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
       "DownstreamScheme": "http",
       "DownstreamPathTemplate": "/api/todolist/{everything}",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
       "DownstreamHostAndPorts": [
         {
           "Host": "todo-service",
@@ -41,6 +49,10 @@
       "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
       "DownstreamPathTemplate": "/api/items/{everything}",
       "DownstreamScheme": "http",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
       "DownstreamHostAndPorts": [
         {
           "Host": "item-service",
