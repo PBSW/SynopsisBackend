@@ -1,9 +1,21 @@
 ﻿{
   "Routes": [
     {
-      "UpstreamPathTemplate": "/api/user",
+      "UpstreamPathTemplate": "/api/auth/{everything}",
       "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
-      "DownstreamPathTemplate": "/api/user",
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auth-service",
+          "Port": 8080
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/api/user/{everything}",
+      "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
+      "DownstreamPathTemplate": "/api/user/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -13,10 +25,10 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/todolist",
+      "UpstreamPathTemplate": "/api/todolist/{everything}",
       "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/todolist",
+      "DownstreamPathTemplate": "/api/todolist/{everything}",
       "DownstreamHostAndPorts": [
         {
           "Host": "todo-service",
@@ -25,10 +37,10 @@
       ]
     },
     {
-      "UpstreamPathTemplate": "/api/items",
+      "UpstreamPathTemplate": "/api/items/{everything}",
       "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"],
+      "DownstreamPathTemplate": "/api/items/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamPathTemplate": "/api/items",
       "DownstreamHostAndPorts": [
         {
           "Host": "item-service",
